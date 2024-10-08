@@ -1,9 +1,17 @@
 /** @type import('hardhat/config').HardhatUserConfig */
 
 require("@nomiclabs/hardhat-ethers");
+require("dotenv").config();
 
 module.exports = {
   solidity: "0.8.27",
+
+  networks: {
+    sepolia: {
+      url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
+      accounts: [vars.get("wallet1key")],
+    },
+  },
 
   settings: {
     optimizer: {
