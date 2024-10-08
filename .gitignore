@@ -1,1 +1,4 @@
 yarn.lock
+artifacts/
+cache/
+node_modules/
