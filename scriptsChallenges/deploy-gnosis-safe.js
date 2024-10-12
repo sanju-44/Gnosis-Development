@@ -1,59 +1,64 @@
 require('dotenv').config();
-const { ethers } = require("hardhat");
+const { ethers } = require('ethers');
 
-async function main() {
-  const safeMasterCopyAddress = process.env.SAFE_MASTER_COPY_ADDRESS;
-  const safeProxyFactoryAddress = process.env.SAFE_PROXY_FACTORY_ADDRESS;
-  const owner1 = process.env.ACCOUNT_1;
-  const owner2 = process.env.ACCOUNT_2;
+// Define Gnosis Safe contract ABI (Minimal ABI)
+const masterCopyABI = [
+  'function setup(address[] calldata _owners, uint256 _threshold, address to, bytes calldata data, address fallbackHandler, address paymentToken, uint256 payment, address payable paymentReceiver)'
+];
+const proxyFactoryABI = [
+  'event ProxyCreation(address proxy)',
+  'function createProxy(address masterCopy, bytes memory initializer) public returns (address proxy)'
+];
 
-  // // Step 1: Get the GnosisSafe contract instance
-  // const GnosisSafe = await ethers.getContractFactory("GnosisSafe");
-  // await GnosisSafe.deploy();
-  // console.log("GnosisSafe MasterCopy Address:", GnosisSafe.address);
+const safeMasterCopyAddress = process.env.SAFE_MASTER_COPY_ADDRESS; // same for both localhost and mainnet ethereum
+const safeProxyFactoryAddress = process.env.SAFE_PROXY_FACTORY_ADDRESS;
+const owner1 = process.env.ACCOUNT_1;
+const owner2 = process.env.ACCOUNT_2;
 
-  // Step 2: Get the GnosisSafeProxyFactory contract instance
-  const GnosisSafeProxyFactory = await ethers.getContractFactory("GnosisSafeProxyFactory");
-  const GnosisSafeProxyFactoryDeployed = await GnosisSafeProxyFactory.deploy();
-  console.log("Interacting with deployed GnosisSafeProxyFactory at:", GnosisSafeProxyFactoryDeployed.address);
+// Connect to a JSON RPC provider
+const provider = new ethers.providers.JsonRpcProvider();
+const signer = provider.getSigner(process.env.owner1);
 
-  // const owners = [owner1, owner2];
-  // const threshold = 2; // Require 2 out of 2 owners to approve transactions
-  // const to = ethers.constants.AddressZero; // No delegate call in this case
-  // const data = "0x"; // Empty data payload
-  // const fallbackHandler = ethers.constants.AddressZero; // No fallback handler
-  // const paymentToken = ethers.constants.AddressZero; // ETH as the payment token
-  // const payment = 0; // No payment involved
-  // const paymentReceiver = ethers.constants.AddressZero;
+// Contract addresses
+const masterCopyAddress = safeMasterCopyAddress; // Gnosis Safe Master Copy address
+const proxyFactoryAddress = safeProxyFactoryAddress; // Gnosis Safe Proxy Factory address
 
-  // // Step 3: Encode the setup function call
-  // const setupData = GnosisSafe.interface.encodeFunctionData("setup", [
-  //   owners,
-  //   threshold,
-  //   to,
-  //   data,
-  //   fallbackHandler,
-  //   paymentToken,
-  //   payment,
-  //   paymentReceiver
-  // ]);
+async function createGnosisSafe() {
+  // Owners of the Safe and threshold
+  const owners = [owner1, owner2];
+  const threshold = 2;
 
-  // // Step 4: Deploy the Gnosis Safe Proxy
-  // const tx = await GnosisSafeProxyFactory.createProxy(safeMasterCopyAddress, setupData);
-  // const receipt = await tx.wait();
+  // Connect to Master Copy and Proxy Factory contracts
+  const masterCopyContract = new ethers.Contract(masterCopyAddress, masterCopyABI, signer);
+  const proxyFactoryContract = new ethers.Contract(proxyFactoryAddress, proxyFactoryABI, signer);
 
-  // // Step 5: Check events emitted by the transaction receipt
-  // const event = receipt.events.find(event => event.event === "ProxyCreation");
-  // const proxyAddress = event ? event.args.proxy : null;
+  // Create the initializer data for Gnosis Safe
+  const initializer = masterCopyContract.interface.encodeFunctionData('setup', [
+    owners,
+    threshold,
+    ethers.constants.AddressZero, // No module
+    '0x', // No initialization data
+    ethers.constants.AddressZero, // Fallback handler
+    ethers.constants.AddressZero, // Payment token
+    0, // Payment amount
+    ethers.constants.AddressZero // Payment receiver
+  ]);
 
-  // if (proxyAddress) {
-  //     console.log("Gnosis Safe Proxy deployed at:", proxyAddress);
-  // } else {
-  //     console.error("ProxyCreation event not found, unable to retrieve proxy address.");
-  // }
+  // Create the proxy safe via the Proxy Factory
+  const tx = await proxyFactoryContract.createProxy(masterCopyAddress, initializer);
+  const receipt = await tx.wait();
+
+  // Look for the `ProxyCreation` event in the logs
+  const event = receipt.events.find(e => e.event === 'ProxyCreation');
+  
+  if (event) {
+    const proxyAddress = event.args.proxy;
+    console.log('Safe deployed at:', proxyAddress);
+  } else {
+    console.log('ProxyCreation event not found in transaction receipt');
+  }
 }
 
-main().catch((error) => {
+createGnosisSafe().catch((error) => {
   console.error(error);
-  process.exitCode = 1;
 });

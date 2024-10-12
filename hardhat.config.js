@@ -8,8 +8,8 @@ module.exports = {
 
   networks: {
     sepolia: {
-      url: `https://sepolia.infura.io/v3/${INFURA_API_KEY}`,
-      accounts: [vars.get("wallet1key")],
+      url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.API_KEY}`,
+      accounts: [process.env.WALLET_1_PRIVATE_KEY],
     },
   },
 

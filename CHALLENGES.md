@@ -1,8 +1,6 @@
 1. Error: Transaction reverted: trying to deploy a contract whose code it too large
     
-    Try to solve this from "scriptsChallenges/deploy-gnosis-safe.js"
+    this error occurs commonly in core GnosisSafe.sol deployment. to solve this
 
-    use command--> npx hardhat run scriptsChallenges/deploy-gnosis-safe.js --network localhost 
-    
-    because by default the network will be hardhat
+    should use pre-deployed master copy of this GnosisSafe use them for both sepolia and mainnet use it
 
