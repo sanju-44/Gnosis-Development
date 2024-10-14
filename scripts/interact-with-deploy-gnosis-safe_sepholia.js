@@ -1,5 +1,6 @@
 require("dotenv").config();
 const { ethers } = require("hardhat");
+const Safe = require("@gnosis.pm/safe-core-sdk").default;
 
 
 // Step 1: Provide the GnosisSafe contract address (deployed earlier)
@@ -14,6 +15,7 @@ async function main() {
     const provider = ethers.getDefaultProvider("sepolia"); // Use Sepolia network
     const owner1Signer = new ethers.Wallet(owner1Private, provider);
     const owner2Signer = new ethers.Wallet(owner2Private, provider);
+
 
     // Step 2: Get the GnosisSafe contract instance
     const GnosisSafe = await ethers.getContractAt("GnosisSafe", gnosisSafeAddress);
@@ -56,7 +58,8 @@ async function main() {
         ethers.constants.AddressZero, // RefundReceiver
         await GnosisSafe.nonce()
     );
-    console.log("txHash:::::", txHash)
+
+    // console.log("txHash:::::", txHash)
     console.log("await GnosisSafe.nonce():::::", await GnosisSafe.nonce())
     // The owner signs the transaction hash
     const txByteArray = ethers.utils.arrayify(txHash);
@@ -71,14 +74,14 @@ async function main() {
     const owner1SplitSignature = ethers.utils.splitSignature(owner1Signature);
     const owner2SplitSignature = ethers.utils.splitSignature(owner2Signature);
 
-    // console.log("owner1SplitSignature:::::", owner1SplitSignature);
-    // console.log("owner1SplitSignature.r:::::", owner1SplitSignature.r);
-    // console.log("owner1SplitSignature.s:::::", owner1SplitSignature.s);
-    // console.log("ethers.utils.hexlify(owner1SplitSignature.v):::::", ethers.utils.hexlify(owner1SplitSignature.v));
-    // console.log("owner2SplitSignature:::::", owner2SplitSignature);
-    // console.log("owner2SplitSignature.r:::::", owner2SplitSignature.r);
-    // console.log("owner2SplitSignature.s:::::", owner2SplitSignature.s);
-    // console.log("ethers.utils.hexlify(owner2SplitSignature.v):::::", ethers.utils.hexlify(owner2SplitSignature.v));
+    console.log("owner1SplitSignature:::::", owner1SplitSignature);
+    console.log("owner1SplitSignature.r:::::", owner1SplitSignature.r);
+    console.log("owner1SplitSignature.s:::::", owner1SplitSignature.s);
+    console.log("ethers.utils.hexlify(owner1SplitSignature.v):::::", ethers.utils.hexlify(owner1SplitSignature.v));
+    console.log("owner2SplitSignature:::::", owner2SplitSignature);
+    console.log("owner2SplitSignature.r:::::", owner2SplitSignature.r);
+    console.log("owner2SplitSignature.s:::::", owner2SplitSignature.s);
+    console.log("ethers.utils.hexlify(owner2SplitSignature.v):::::", ethers.utils.hexlify(owner2SplitSignature.v));
 
     const combinedSignatures = ethers.utils.concat([
         owner1SplitSignature.r,
@@ -91,8 +94,8 @@ async function main() {
     
     console.log("combinedSignatures:::::", combinedSignatures)
 
-    // const combinedSignatures1 = ethers.utils.concat([owner1Signature, owner2Signature]);
-    // console.log("combinedSignatures1:::::", combinedSignatures1)
+    const combinedSignatures1 = ethers.utils.concat([owner1Signature, owner2Signature]);
+    console.log("combinedSignatures1:::::", combinedSignatures1)
 
     // Now execute the transaction with the necessary owner signatures
     console.log("XXXXXXXXXXXXXXXXXXXX")
@@ -108,14 +111,14 @@ async function main() {
         ethers.constants.AddressZero, // RefundReceiver
         "0x00000000000000000000000072ba251b1fbc2d9268b93aa74cd1cfcfc2c62bb8000000000000000000000000000000000000000000000000000000000000000001" // Array of collected signatures
     );
-    // console.log("ZZZZZZZZZZZZZZZZZZZ")
-    // console.log("executeTx:::::", executeTx);
-    // console.log("getThresholdAfter:::::", getThreshold);
+    console.log("ZZZZZZZZZZZZZZZZZZZ")
+    console.log("executeTx:::::", executeTx);
+    console.log("getThresholdAfter:::::", getThreshold);
 
-    // console.log("owners:::::", owners);
-    // console.log("isOwner1:::::", isOwner1);
-    // console.log("isOwner2:::::", isOwner2);
-    // console.log("getThreshold:::::", getThreshold);
+    console.log("owners:::::", owners);
+    console.log("isOwner1:::::", isOwner1);
+    console.log("isOwner2:::::", isOwner2);
+    console.log("getThreshold:::::", getThreshold);
 
 }
 
