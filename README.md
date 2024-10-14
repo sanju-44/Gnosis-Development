@@ -1,6 +1,6 @@
 # Gnosis-Development
 
-## gnosis safe contracts deployment on localhost
+## gnosis safe contracts deployment on localhost ethereum node (0nly if you are working with localhost)
 This deploys the gnosis safe sore contracts into hardhat's localhost ethereum network (this localhsot ethereum network has to be running when under development)
 
     git clone https://github.com/gnosis/safe-contracts/
@@ -9,4 +9,5 @@ This deploys the gnosis safe sore contracts into hardhat's localhost ethereum ne
     yarn add hardhat
     npx hardhat node
 
-## 
+## working with gnosis safe deployed on public network (for sepolia or local)
+    yarn install 
