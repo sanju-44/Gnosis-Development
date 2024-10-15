@@ -9,7 +9,7 @@ module.exports = {
   networks: {
     sepolia: {
       url: `https://eth-sepolia.g.alchemy.com/v2/${process.env.API_KEY}`,
-      accounts: [process.env.WALLET_1_PRIVATE_KEY],
+      accounts: [process.env.PUBLIC_ACCOUNT_1_KEY],
     },
   },
 

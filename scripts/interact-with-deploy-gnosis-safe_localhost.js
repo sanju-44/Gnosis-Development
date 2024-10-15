@@ -23,12 +23,13 @@ async function main() {
     // ***** change threshold *****
     console.log("getThresholdBefore:::::", getThreshold);
     // Encoding the changeThreshold call
-    const changeThresholdTxData = GnosisSafe.interface.encodeFunctionData("changeThreshold", [1]);
+    const encodedFuncData = GnosisSafe.interface.encodeFunctionData("changeThreshold", [2]);
+    console.log("encodedFuncData:::::", encodedFuncData)
     // Create the transaction object to propose
     const tx = {
         to: gnosisSafeAddress,               // Address of the Gnosis Safe contract itself
         value: 0,                            // No ETH value required
-        data: changeThresholdTxData,         // Encoded data for the changeThreshold function
+        data: encodedFuncData,         // Encoded data for the changeThreshold function
         operation: 0,                        // 0 = CALL, 1 = DELEGATECALL
     };
     // Assuming we are interacting from one of the owners
