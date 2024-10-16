@@ -1,6 +1,6 @@
 # Gnosis-Development
 
-## gnosis safe contracts deployment on localhost ethereum node (0nly if you are working with localhost)
+## to use localhost ethereum node with mastercopy of gnosis safe (0nly if you are working with localhost)
 This deploys the gnosis safe sore contracts into hardhat's localhost ethereum network (this localhsot ethereum network has to be running when under development)
 
     git clone https://github.com/gnosis/safe-contracts/

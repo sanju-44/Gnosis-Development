@@ -1,6 +1,5 @@
 require("dotenv").config();
 const { ethers } = require("hardhat");
-const Safe = require("@gnosis.pm/safe-core-sdk").default;
 
 
 // Step 1: Provide the GnosisSafe contract address (deployed earlier)
@@ -11,11 +10,6 @@ async function main() {
     const owner2 = process.env.PUBLIC_ACCOUNT_2; // 0x6eDCf3aE8aC36B18a4590D764eE88b429D48243d
     const owner1Private = process.env.PUBLIC_ACCOUNT_1_KEY;
     const owner2Private = process.env.PUBLIC_ACCOUNT_2_KEY;
-
-    const provider = ethers.getDefaultProvider("sepolia"); // Use Sepolia network mentioned in hardhat.config.js
-    const owner1Signer = new ethers.Wallet(owner1Private, provider);
-    const owner2Signer = new ethers.Wallet(owner2Private, provider);
-
 
     // Step 2: Get the GnosisSafe contract instance
     const GnosisSafe = await ethers.getContractAt("GnosisSafe", gnosisSafeAddress);
@@ -29,10 +23,15 @@ async function main() {
     // const isOwner = GnosisSafe.isOwner(owner1);
     // console.log("isOwner:::::", isOwner)
 
+<<<<<<< HEAD
     const encodedFuncData = GnosisSafe.interface.encodeFunctionData("changeThreshold", [2]);
 
     console.log("getThresholdBefore:::::", await GnosisSafe.getThreshold());
+=======
+    const encodedFuncData = GnosisSafe.interface.encodeFunctionData("changeThreshold", [1]);
+>>>>>>> bdb19d4247d3e2f5c090857966729009aaeabb3f
     console.log("encodedFuncData:::::", encodedFuncData)
+    console.log("getThresholdBefore:::::", await GnosisSafe.getThreshold());
 
     const tx = {
         to: gnosisSafeAddress,               // Address of the Gnosis Safe contract itself
@@ -57,18 +56,45 @@ async function main() {
     //     await GnosisSafe.nonce()
     // );
 
+<<<<<<< HEAD
     // console.log("txHash:::::", txHash)
     // console.log("await GnosisSafe.nonce():::::", await GnosisSafe.nonce())
 
+=======
+    const provider = ethers.getDefaultProvider("sepolia"); // Use Sepolia network mentioned in hardhat.config.js
+    const signer1 = new ethers.Wallet(owner1Private, provider);
+    const signer2 = new ethers.Wallet(owner2Private, provider);
+
+    // console.log("signer1:::::", signer1)
+    const signature = await signer1.signMessage(ethers.utils.arrayify(txHash));
+    const { r, s, v } = ethers.utils.splitSignature(signature);
+    const formattedSignature = r + s.slice(2) + (v - 27).toString(16).padStart(2, '0');
+
+    console.log("formattedSignature:::::", formattedSignature)
+    if (formattedSignature == "0x00000000000000000000000072ba251b1fbc2d9268b93aa74cd1cfcfc2c62bb8000000000000000000000000000000000000000000000000000000000000000001") {
+        console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+    }
+    
+
+
+>>>>>>> bdb19d4247d3e2f5c090857966729009aaeabb3f
     // const owner1Signature = await owner1Signer.signMessage(ethers.utils.arrayify(txHash));
     // const owner2Signature = await owner2Signer.signMessage(ethers.utils.arrayify(txHash));
     // console.log("owner1Signature:::::", owner1Signature);
     // console.log("owner2Signature:::::", owner2Signature);
+<<<<<<< HEAD
+=======
+
+    // // Split the signatures into r, s, and v components
+    // const owner1SplitSignature = ethers.utils.splitSignature(owner1Signature);
+    // const owner2SplitSignature = ethers.utils.splitSignature(owner2Signature);
+>>>>>>> bdb19d4247d3e2f5c090857966729009aaeabb3f
 
     // // Split the signatures into r, s, and v components
     // const owner1SplitSignature = ethers.utils.splitSignature(owner1Signature);
     // const owner2SplitSignature = ethers.utils.splitSignature(owner2Signature);
 
+<<<<<<< HEAD
     // // console.log("owner1SplitSignature:::::", owner1SplitSignature);
     // // console.log("owner1SplitSignature.r:::::", owner1SplitSignature.r);
     // // console.log("owner1SplitSignature.s:::::", owner1SplitSignature.s);
@@ -78,6 +104,8 @@ async function main() {
     // // console.log("owner2SplitSignature.s:::::", owner2SplitSignature.s);
     // // console.log("ethers.utils.hexlify(owner2SplitSignature.v):::::", ethers.utils.hexlify(owner2SplitSignature.v));
 
+=======
+>>>>>>> bdb19d4247d3e2f5c090857966729009aaeabb3f
     // const combinedSignatures = ethers.utils.concat([
     //     owner1SplitSignature.r,
     //     owner1SplitSignature.s,
@@ -89,6 +117,7 @@ async function main() {
     
     // console.log("combinedSignatures:::::", combinedSignatures)
 
+<<<<<<< HEAD
     // // Now execute the transaction with the necessary owner signatures
     // console.log("XXXXXXXXXXXXXXXXXXXX")
     // const executeTx = await GnosisSafe.execTransaction(
@@ -106,6 +135,25 @@ async function main() {
     // console.log("YYYYYYYYYYYYYYYYYYYYY")
     // console.log("executeTx:::::", executeTx);
     // console.log("getThresholdAfter:::::", await GnosisSafe.getThreshold());
+=======
+    // Now execute the transaction with the necessary owner signatures
+    // console.log("XXXXXXXXXXXXXXXXXXXX")
+    const executeTx = await GnosisSafe.execTransaction(
+        tx.to,
+        tx.value,
+        tx.data,
+        tx.operation,
+        0, // SafeTxGas
+        0, // BaseGas
+        0, // GasPrice
+        ethers.constants.AddressZero, // GasToken
+        ethers.constants.AddressZero, // RefundReceiver
+        "0x00000000000000000000000072ba251b1fbc2d9268b93aa74cd1cfcfc2c62bb8000000000000000000000000000000000000000000000000000000000000000001" // Array of collected signatures
+    );
+    console.log("YYYYYYYYYYYYYYYYYYYYY")
+    console.log("executeTx:::::", executeTx);
+    console.log("getThresholdAfter:::::", await GnosisSafe.getThreshold());
+>>>>>>> bdb19d4247d3e2f5c090857966729009aaeabb3f
 }
 
 main().catch((error) => {
