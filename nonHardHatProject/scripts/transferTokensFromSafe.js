@@ -4,9 +4,9 @@ import { ethers } from 'ethers';
 import "dotenv/config";
 
 // update with actual values
-const SafeWalletAddress = "0x342CF22cb2A61Dcc0f21125D36824cEC8066BeE0" // deployed safe address
+const SafeWalletAddress = "0x636E64b1Be4185255d2c2f58b826Aa4eD79A724c" // deployed safe address
 const tokenContractAddresss = "0xDE794b03cA86146eB8B895B9ee8f88246C2A7CF8"; // deployed token contract address
-const tokenReceiver = "0xc88cE00c94096f212DDdA027600BFB01698E29c3"; // token receiver address
+const tokenReceiver = "0xAf4DA6B2141f8849FAa0E0f4cB91F104a93aC42e"; // token receiver address
 const tokenAmount = "50.0"; // token amount to send
 
 const SIGNER_PRIVATE_KEY = process.env.PUBLIC_ACCOUNT_1_KEY;
@@ -58,8 +58,7 @@ async function main() {
 
     const safeTxHashh = txResult.transactions?.safeTxHash
     
-    console.log("safeTransaction:::::", safeTxHashh)      
-
+    console.log("safeTransaction:::::", safeTxHashh)
 }
 
 main();

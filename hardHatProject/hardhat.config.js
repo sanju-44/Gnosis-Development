@@ -5,7 +5,6 @@ require("dotenv").config();
 
 const ACCOUNT_1_PRIVATE_KEY = process.env.PUBLIC_ACCOUNT_1_KEY;
 
-
 module.exports = {
   solidity: "0.8.27",
 

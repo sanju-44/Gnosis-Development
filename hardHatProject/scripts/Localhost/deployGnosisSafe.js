@@ -1,24 +1,25 @@
 require('dotenv').config();
+const env = require('hardhat');
 const { ethers } = require("hardhat");
 
-const owner1 = "0x72bA251b1FBC2d9268B93Aa74CD1cfcFC2C62BB8";
-const owner2 = "0x6eDCf3aE8aC36B18a4590D764eE88b429D48243d"; 
-const owner3 = "0x67763E259Ef0AD351AB01a638f5785606fE1aC8d";
-const owner4 = "0x4657483ef920e7b90164A83967D65A0CD919585f";
+const owner1 = process.env.PUBLIC_ACCOUNT_1;
+const owner2 = process.env.PUBLIC_ACCOUNT_2; 
+const owner3 = process.env.PUBLIC_ACCOUNT_3;
+const owner4 = "0x488087413eb8E0f0C00a1f9FB5Cfe4Ed14fD7cce";
 
 const OWNERS = [owner1, owner2, owner3, owner4];
 const THRESHOLD = 2;
 
-const GnosisSafeMasterCopyAddress = "0xd9Db270c1B5E3Bd161E8c8503c55cEABeE709552"
-const GnosisSafeProxyFactoryCopyAddress = "0xa6B71E26C5e0845f74c812102Ca7114b6a896AB2"
+const GnosisSafeMasterCopyAddress = "0x36F86745986cB49C0e8cB38f14e948bb82d8d1A8"
+const GnosisSafeProxyFactoryCopyAddress = "0x8b24df6da67319eE9638a798660547D67a29f4ce"
 
 async function main() {
   // Step 1: load the GnosisSafe mastercopy address for sepolia network
-  const GnosisSafe = await ethers.getContractAt("GnosisSafe", GnosisSafeMasterCopyAddress);
+  const GnosisSafe = await ethers.getContractAt("Safe", GnosisSafeMasterCopyAddress);
   console.log("GnosisSafe MasterCopy Address:", GnosisSafe.address);
 
   // Step 2: load the GnosisSafeProxyFactory masterrcopy a address for sepolia network
-  const GnosisSafeProxyFactory = await ethers.getContractAt("GnosisSafeProxyFactory", GnosisSafeProxyFactoryCopyAddress);
+  const GnosisSafeProxyFactory = await ethers.getContractAt("SafeProxyFactory", GnosisSafeProxyFactoryCopyAddress);
   console.log("Interacting with deployed GnosisSafeProxyFactory at:", GnosisSafeProxyFactory.address);
 
   const to = ethers.constants.AddressZero; // No delegate call in this case
@@ -27,6 +28,8 @@ async function main() {
   const paymentToken = ethers.constants.AddressZero; // ETH as the payment token
   const payment = 0; // No payment involved
   const paymentReceiver = ethers.constants.AddressZero;
+
+  console.log("checkkk:::::", ethers.BigNumber.from(Math.floor(Math.random() * 1000000)))
 
   // Step 3: Encode the setup function call
   const setupData = GnosisSafe.interface.encodeFunctionData("setup", [
@@ -41,7 +44,7 @@ async function main() {
   ]);
 
   // Step 4: Deploy the Gnosis Safe Proxy
-  const tx = await GnosisSafeProxyFactory.createProxy(GnosisSafeMasterCopyAddress, setupData);
+  const tx = await GnosisSafeProxyFactory.createProxyWithNonce(GnosisSafeMasterCopyAddress, setupData, ethers.BigNumber.from(Math.floor(Math.random() * 1000000)));
   const receipt = await tx.wait();
 
   // Step 5: Check events emitted by the transaction receipt

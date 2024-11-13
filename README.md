@@ -1,5 +1,8 @@
 # Gnosis-Development
 
+# for mastercopy of a contract address to sepcific network
+## https://docs.safe.global/advanced/smart-account-supported-networks
+
 ## to use localhost ethereum node with mastercopy of gnosis safe (0nly if you are working with localhost)
 This deploys the gnosis safe core contracts into hardhat's localhost ethereum network (this localhsot ethereum network has to be running when under development)
 
