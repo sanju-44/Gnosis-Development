@@ -1,6 +1,6 @@
 /** @type import('hardhat/config').HardhatUserConfig */
 
-require("@nomiclabs/hardhat-ethers");
+require("@nomicfoundation/hardhat-ethers");
 require("dotenv").config();
 
 const ACCOUNT_1_PRIVATE_KEY = process.env.PUBLIC_ACCOUNT_1_KEY;

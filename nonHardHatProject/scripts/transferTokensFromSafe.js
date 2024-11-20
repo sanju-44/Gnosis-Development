@@ -61,7 +61,8 @@ async function main() {
     console.log("safeTransaction:::::", safeTxHashh)
 }
 
-main();
+// main();
 
+console.log(ethers)
 
 
