@@ -1,0 +1,13 @@
+CID:
+QmfHqQDrbQXKN98jybDgE52yYLuPoo9fk9cRC2CVaJZsiS
+
+Successfully published under the key:
+self
+k51qzi5uqu5djzceigrfxobnlbl5vpbr6ntyb7ax3uimx5r3mkndxxw7dca0tn
+
+Copy the link below and share it with others. The IPNS address will resolve as long as your node remains available on the network once a day to refresh the IPNS record.
+https://ipfs.io/ipns/k51qzi5uqu5djzceigrfxobnlbl5vpbr6ntyb7ax3uimx5r3mkndxxw7dca0tn
+
+
+
+0xA34f86911BA824e9eD8AC5A63969E4E3bE95fd87

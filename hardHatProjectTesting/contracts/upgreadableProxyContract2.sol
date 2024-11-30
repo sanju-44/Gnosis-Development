@@ -21,7 +21,7 @@ interface IERC20Proxy {
  */
 contract ERC20Proxy is Ownable {
     // Storage slot for the address of the current implementation contract
-    address public implementation;
+    address internal implementation;
 
     /**
      * @dev Sets the initial implementation address.
